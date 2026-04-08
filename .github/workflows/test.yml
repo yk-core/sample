@@ -1,11 +1,11 @@
-name: Rename file.js to changed.js
+name: Join files into joined.js
 
 on:
   push:
     branches: [main]
 
 jobs:
-  rename:
+  join:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,12 +14,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rename file
+      - name: Join files
         run: |
-          if [ -f file.js ]; then
-            mv file.js changed.js
+          if [ -f file1.js ] && [ -f file2.js ]; then
+            cat file1.js file2.js > joined.js
+            echo "Files joined into joined.js"
           else
-            echo "file.js not found, skipping rename"
+            echo "One or both files missing"
+            exit 0
           fi
 
       - name: Commit and push changes
@@ -27,6 +29,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add .
-          git commit -m "Rename file.js to changed.js [skip ci]" || echo "No changes to commit"
+          git add joined.js
+
+          git commit -m "Generate joined.js [skip ci]" || echo "No changes to commit"
           git push
