@@ -1,12 +1,32 @@
-name: Test Workflow
+name: Rename file.js to changed.js
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
-  test:
+  rename:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo test
-        run: echo "WORKFLOW IS DETECTED"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rename file
+        run: |
+          if [ -f file.js ]; then
+            mv file.js changed.js
+          else
+            echo "file.js not found, skipping rename"
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .
+          git commit -m "Rename file.js to changed.js [skip ci]" || echo "No changes to commit"
+          git push
