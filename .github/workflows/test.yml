@@ -1,4 +1,4 @@
-name: Test YAML
+name: Test Workflow
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
 
     steps:
       - name: Echo test
-        run: echo "🔥 YAML is working!"
+        run: echo "WORKFLOW IS DETECTED"
