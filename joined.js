@@ -9,11 +9,8 @@ class Sample {
     }
 }
 
-Sample.fn = Sample.prototype;Sample.fn.set = function (name) {
+Sample.fn = Sample.prototype;Sample.fn.amaze = function (name) {
 this.value = name;
 return this;   
 }
 
-Sample.fn.get = function () {
-return this.value;   
-}
